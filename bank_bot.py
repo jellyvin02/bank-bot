@@ -252,7 +252,7 @@ async def add(update, context):
     # Include admin name in transaction log
     admin_name = update.effective_user.first_name
     prev_tx = sheet.cell(row, 7).value
-    new_tx = f"{format_datetime()} • {CURRENCY}{amount} added by {admin_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} • {CURRENCY}{amount} added by {admin_name}"
+    new_tx = f"{format_datetime()} + {CURRENCY}{amount} {admin_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} + {CURRENCY}{amount} {admin_name}"
     sheet.update_cell(row, 7, new_tx)
 
     # Track who added (column 8) - cumulative contributions
@@ -324,7 +324,7 @@ async def use(update, context):
     # Include admin name in transaction log
     admin_name = update.effective_user.first_name
     prev_tx = sheet.cell(row, 7).value
-    new_tx = f"{format_datetime()} • {CURRENCY}{amount} deducted by {admin_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} • {CURRENCY}{amount} deducted by {admin_name}"
+    new_tx = f"{format_datetime()} - {CURRENCY}{amount} {admin_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} - {CURRENCY}{amount} {admin_name}"
     sheet.update_cell(row, 7, new_tx)
 
     # Deduct from contributions (column 8) - realtime tracking
@@ -447,7 +447,7 @@ async def button_callback(update, context):
             f"━━━━━━━━━━━━━━━━━━━━\n\n"
             f"{tx_display}\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"📈 Total: {len(tx_list)} transactions\n"
+            f"total: {len(tx_list)} transactions\n"
         )
         keyboard = [
             [InlineKeyboardButton("◀️ Back", callback_data=f"back_{target_id_str}"),
@@ -527,7 +527,7 @@ async def button_callback(update, context):
         
         # Add sender transaction
         prev_tx = sheet.cell(transfer_data["sender_row"], 7).value
-        new_tx = f"{format_datetime()} • {CURRENCY}{amount} sent to {target_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} • {CURRENCY}{amount} sent to {target_name}"
+        new_tx = f"{format_datetime()} - {CURRENCY}{amount} {target_name}\n{prev_tx}" if prev_tx else f"{format_datetime()} - {CURRENCY}{amount} {target_name}"
         sheet.update_cell(transfer_data["sender_row"], 7, new_tx)
         
         # Add to receiver
@@ -539,7 +539,7 @@ async def button_callback(update, context):
         # Add receiver transaction
         sender_name = sheet.cell(transfer_data["sender_row"], 2).value
         prev_tx_target = sheet.cell(target_row, 7).value
-        new_tx_target = f"{format_datetime()} • {CURRENCY}{amount} received from {sender_name}\n{prev_tx_target}" if prev_tx_target else f"{format_datetime()} • {CURRENCY}{amount} received from {sender_name}"
+        new_tx_target = f"{format_datetime()} + {CURRENCY}{amount} {sender_name}\n{prev_tx_target}" if prev_tx_target else f"{format_datetime()} + {CURRENCY}{amount} {sender_name}"
         sheet.update_cell(target_row, 7, new_tx_target)
         
         # Clean up
@@ -670,10 +670,7 @@ async def start(update, context):
         f"  /new — Create account\n"
         f"  /bal — Check balance\n\n"
         
-        f"🏆 <b>Leaderboard</b>\n"
-        f"  /top — Top 10 richest\n\n"
-        
-        f"� <b>Info</b>\n"
+        f" <b>Info</b>\n"
         f"  /infobank — Bank stats\n"
         f"  /help — This menu\n\n"
         
@@ -767,30 +764,7 @@ async def transfer(update, context):
     await update.message.reply_text(msg, parse_mode="HTML", reply_markup=InlineKeyboardMarkup(keyboard))
 
 # ==================== TOP/LEADERBOARD ====================
-async def top(update, context):
-    all_data = sheet.get_all_records()
-    
-    if not all_data:
-        await update.message.reply_text("No accounts yet!")
-        return
-    
-    # Sort by balance (descending)
-    sorted_users = sorted(all_data, key=lambda x: int(x.get("Balance", 0) or 0), reverse=True)[:10]
-    
-    medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
-    
-    leaderboard = []
-    for i, user in enumerate(sorted_users):
-        name = user.get("Name", "Unknown")
-        balance = user.get("Balance", 0)
-        medal = medals[i] if i < len(medals) else f"{i+1}."
-        leaderboard.append(f"{medal} {name} — {CURRENCY}{balance}")
-    
-    msg = (
-        f"🏆 <b>{BANK_NAME} Leaderboard</b>\n\n"
-        + "\n".join(leaderboard)
-    )
-    await update.message.reply_text(msg, parse_mode="HTML")
+
 
 
 async def clear(update, context):
@@ -867,7 +841,7 @@ app.add_handler(CommandHandler("dem", dem))
 app.add_handler(CommandHandler("bal", bal))
 app.add_handler(CommandHandler("infobank", infobank))
 app.add_handler(CommandHandler("transfer", transfer))
-app.add_handler(CommandHandler("top", top))
+
 app.add_handler(CommandHandler("clear", clear))
 
 
