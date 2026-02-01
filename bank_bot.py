@@ -596,7 +596,6 @@ async def infobank(update, context):
         f"owner: {owner_link}\n"
         f"managers:\n"
         f"{managers_display}\n"
-        f"currency: {CURRENCY}\n"
         f"total accounts: {total_users}\n"
         f"total value: {total_value}"
     )
@@ -827,7 +826,7 @@ async def clear(update, context):
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 
 # Register command handlers
-app.add_handler(CommandHandler("start", start))
+# app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("help", start))
 app.add_handler(CommandHandler("new", new))
 app.add_handler(CommandHandler("add", add))
