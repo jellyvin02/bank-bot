@@ -654,11 +654,11 @@ async def check(update, context):
 async def start(update, context):
     user = update.effective_user
     msg = (
-        f"🏦 <b>Welcome to {BANK_NAME}!</b>\n"
+        f"<b>Welcome to {BANK_NAME}!🩵</b>\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"Hello, {user.first_name}! 👋\n\n"
+        f"Hello, {user.first_name}! \n\n"
         
-        f"💳 <b>Account</b>\n"
+        f"▪️ <b>Account</b>\n"
         f"  /new — Create account\n"
         f"  /bal — Check balance\n\n"
         
