@@ -126,7 +126,8 @@ async def new(update, context):
     if update.message.reply_to_message:
         target = update.message.reply_to_message.from_user
     else:
-        await update.message.reply_text("ℹ️ Reply to a user to create their account.")
+        sent = await update.message.reply_text("ℹ️ Reply to a user to create their account.")
+        schedule_auto_delete(context, update.effective_chat.id, sent.message_id, delay=30)
         return
 
     # Check if already exists
@@ -591,13 +592,13 @@ async def infobank(update, context):
             managers_display += f"• @{username}\n"
 
     msg = (
-        f"river bank 🩵\n\n"
-        f"owner: ({owner_link})\n"
+        f"<b>river bank 🩵</b>\n\n"
+        f"owner: {owner_link}\n"
         f"managers:\n"
         f"{managers_display}\n"
         f"currency: {CURRENCY}\n"
         f"total accounts: {total_users}\n"
-        f"total value: {CURRENCY}{total_value}"
+        f"total value: {total_value}"
     )
     sent_msg = await update.message.reply_text(msg, parse_mode="HTML")
     schedule_auto_delete(context, update.effective_chat.id, sent_msg.message_id)
@@ -664,7 +665,6 @@ async def start(update, context):
         
         f" <b>Info</b>\n"
         f"  /infobank — Bank stats\n"
-        f"  /help — This menu\n\n"
         
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"▪️ <b>Admin Commands</b>\n"
@@ -774,14 +774,16 @@ async def clear(update, context):
         target_row = find_user_row(target.id)
         target_name = target.first_name
         if not target_row:
-            await update.message.reply_text("✖️ This user doesn't have an account.")
+            sent = await update.message.reply_text("this user doesn't have an account ✖️")
+            schedule_auto_delete(context, update.effective_chat.id, sent.message_id, delay=30)
             return
     # Case 2: Mention
     elif context.args and context.args[0].startswith("@"):
         target_username = context.args[0]
         target_row = find_user_by_username(target_username)
         if not target_row:
-            await update.message.reply_text(f"✖️ User {target_username} not found.")
+            sent = await update.message.reply_text("this user doesn't have an account ✖️")
+            schedule_auto_delete(context, update.effective_chat.id, sent.message_id, delay=30)
             return
         target_name = sheet.cell(target_row, 2).value
         # Need target ID to display
@@ -815,7 +817,7 @@ async def clear(update, context):
     sheet.update_cell(target_row, 8, "")  # Clear advance payments
 
     await update.message.reply_text(
-        f"account cleared for {t_link} — {t_id} ☑️",
+        f"account cleared for {t_link} — {t_id} 🔘",
         parse_mode="HTML"
     )
     await send_log(f"🗑️ {update.effective_user.first_name} cleared account for {t_name}", context)
