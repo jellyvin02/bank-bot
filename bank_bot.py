@@ -28,7 +28,7 @@ SPREADSHEET_NAME = "RBank"
 SERVICE_ACCOUNT_FILE = "tg-project-01-b8db80779692.json"
 
 CURRENCY = "₱"
-BANK_NAME = "River Bank"
+BANK_NAME = "river bank"
 LOGS_CHANNEL_ID = -1003381183744
 # =================================================
 
@@ -654,7 +654,7 @@ async def check(update, context):
 async def start(update, context):
     user = update.effective_user
     msg = (
-        f"<b>Welcome to {BANK_NAME}!🩵</b>\n"
+        f"<b>welcome to {BANK_NAME}🩵</b>\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"Hello, {user.first_name}! \n\n"
         
@@ -667,7 +667,7 @@ async def start(update, context):
         f"  /help — This menu\n\n"
         
         f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"🔧 <b>Admin Commands</b>\n"
+        f"▪️ <b>Admin Commands</b>\n"
         f"  /add — Add balance (Reply or @user)\n"
         f"  /use — Deduct balance (Reply or @user)\n"
         f"  /check — View user info\n"
