@@ -591,7 +591,8 @@ async def infobank(update, context):
             managers_display += f"• @{username}\n"
 
     msg = (
-        f"owner: {owner_link}\n"
+        f"river bank 🩵\n\n"
+        f"owner: ({owner_link})\n"
         f"managers:\n"
         f"{managers_display}\n"
         f"currency: {CURRENCY}\n"
