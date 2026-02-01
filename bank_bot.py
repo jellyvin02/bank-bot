@@ -265,7 +265,7 @@ async def add(update, context):
         f"{target_first_name} added {CURRENCY}{amount}.\nNew balance: {CURRENCY}{new_balance}.",
         parse_mode="HTML"
     )
-    await send_log(f"� {update.effective_user.first_name} added {CURRENCY}{amount} to {target_first_name} ({target_id})", context)
+    await send_log(f" {update.effective_user.first_name} added {CURRENCY}{amount} to {target_first_name} ({target_id})", context)
 
 
 
@@ -646,14 +646,14 @@ async def check(update, context):
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"👤 {name} {username}\n"
         f"🔑 {user_id}\n\n"
-        f"� <b>Balance:</b> {format_money(balance)}\n"
+        f" <b>Balance:</b> {format_money(balance)}\n"
         f"{breakdown_text}"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"⏱️ Updated: {last}"
     )
     
     keyboard = [
-        [InlineKeyboardButton(" Transactions", callback_data=f"tx_{user_id}"),
+        [InlineKeyboardButton("▪️ Transactions", callback_data=f"tx_{user_id}"),
          InlineKeyboardButton("✖️ Close", callback_data=f"close_{user_id}")]
     ]
     await update.message.reply_text(msg, parse_mode="HTML", reply_markup=InlineKeyboardMarkup(keyboard))
@@ -785,6 +785,9 @@ async def clear(update, context):
             await update.message.reply_text("✖️ This user doesn't have an account.")
             return
     # Case 2: Mention
+    elif context.args and context.args[0].startswith("@"):
+        target_username = context.args[0]
+        target_row = find_user_by_username(target_username)
         if not target_row:
             await update.message.reply_text(f"✖️ User {target_username} not found.")
             return
