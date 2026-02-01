@@ -443,7 +443,7 @@ async def button_callback(update, context):
             tx_display = "\n".join([f"• {t}" for t in tx_list[:10]])
             
         msg = (
-            f"🧾 <b>Transaction History</b>\n"
+            f"▪️ <b>Transaction History</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n\n"
             f"{tx_display}\n\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
@@ -473,17 +473,17 @@ async def button_callback(update, context):
         breakdown_text = get_contribution_breakdown(target_row)
         
         msg = (
-            f"💳 <b>Account Details</b>\n"
+            f"▪️ <b>Account Details</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"👤 {name} {username}\n"
             f"🔑 {user_id}\n\n"
             f"💸 <b>Balance:</b> {format_money(balance)}\n"
             f"{breakdown_text}"
             f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"⏱️ Updated: {last}"
+            f" Updated: {last}"
         )
         keyboard = [
-            [InlineKeyboardButton("🧾 Transactions", callback_data=f"tx_{user_id}"),
+            [InlineKeyboardButton("▪️ Transactions", callback_data=f"tx_{user_id}"),
              InlineKeyboardButton("✖️ Close", callback_data=f"close_{user_id}")]
         ]
         try:
@@ -653,7 +653,7 @@ async def check(update, context):
     )
     
     keyboard = [
-        [InlineKeyboardButton("� Transactions", callback_data=f"tx_{user_id}"),
+        [InlineKeyboardButton(" Transactions", callback_data=f"tx_{user_id}"),
          InlineKeyboardButton("✖️ Close", callback_data=f"close_{user_id}")]
     ]
     await update.message.reply_text(msg, parse_mode="HTML", reply_markup=InlineKeyboardMarkup(keyboard))
