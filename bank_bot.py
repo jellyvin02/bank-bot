@@ -166,7 +166,7 @@ def get_contribution_breakdown(row):
         sorted_contribs = sorted(advance.items(), key=lambda item: item[1], reverse=True)
         
         for admin, amount in sorted_contribs:
-            result += f"☁️ {admin}: {format_money(amount)}\n"
+            result += f"• {admin}: {format_money(amount)}\n"
         
         return result
     except (json.JSONDecodeError, Exception):
@@ -402,13 +402,10 @@ async def bal(update, context):
     name, username, link, balance, last = data[1], data[2], data[3], data[4], data[5]
     
     msg = (
-        f"💳 <b>Account Details</b>\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"👤 {name} {username}\n"
-        f"🆔 {user.id}\n\n"
-        f"🧾 <b>Balance:</b> {format_money(balance)}\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"🕐 Last updated: {last}"
+        f"▪️ account details for\n\n"
+        f"{link} {username} — <code>{user.id}</code>\n\n"
+        f"<b>balance: {format_money(balance)}</b>\n"
+        f"<i>updated: {last}</i>"
     )
     keyboard = [
         [InlineKeyboardButton("🧾 Transactions", callback_data=f"tx_{user.id}"),
@@ -473,14 +470,11 @@ async def button_callback(update, context):
         breakdown_text = get_contribution_breakdown(target_row)
         
         msg = (
-            f"▪️ <b>Account Details</b>\n"
-            f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"👤 {name} {username}\n"
-            f"🔑 {user_id}\n\n"
-            f"💸 <b>Balance:</b> {format_money(balance)}\n"
-            f"{breakdown_text}"
-            f"━━━━━━━━━━━━━━━━━━━━\n"
-            f" Updated: {last}"
+            f"▪️ account details for\n\n"
+            f"{link} {username} — <code>{user_id}</code>\n\n"
+            f"<b>balance: {format_money(balance)}</b>\n"
+            f"{breakdown_text}\n"
+            f"<i>updated: {last}</i>"
         )
         keyboard = [
             [InlineKeyboardButton("▪️ Transactions", callback_data=f"tx_{user_id}"),
@@ -642,14 +636,11 @@ async def check(update, context):
     breakdown_text = get_contribution_breakdown(target_row)
     
     msg = (
-        f"💳 <b>Account Details</b>\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"👤 {name} {username}\n"
-        f"🔑 {user_id}\n\n"
-        f" <b>Balance:</b> {format_money(balance)}\n"
-        f"{breakdown_text}"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"⏱️ Updated: {last}"
+        f"▪️ account details for\n\n"
+        f"{link} {username} — <code>{user_id}</code>\n\n"
+        f"<b>balance: {format_money(balance)}</b>\n"
+        f"{breakdown_text}\n"
+        f"<i>updated: {last}</i>"
     )
     
     keyboard = [
